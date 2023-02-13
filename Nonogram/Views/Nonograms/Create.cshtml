@@ -1,0 +1,17 @@
+- create a new nonogram when clicked leads to this page
+- Ask user for grid size as two seperate integers on a form
+  - user submits that, staying on this page, the grid is made.
+  - there are no spaces for clues on the top or left hand side of this grid, just blank spaces to be clicked and filled in
+- Grid is viewable for user to draw on.
+- for each click (or maybe click and drag) the user's mouse coords are checked and the corresponding square is updated
+  - so maybe we have a backend object that represents the game board 
+  for l in length
+    for h in height
+      grid[col1,col2,col3, etc]
+        col1[row1.1,row2.1,row3.1, etc]
+        col2[row1.2,row2.2,row3.2,etc]
+        each row1.1/etc value is a boolean that is equivalent to whether or not the grid square is filled in or not
+        traversing the col1 list, you would start a counter when you first find a true. and the counter starts at one. as you continue for each consecutive true you find, the counter iterates up one. when you encounter your first false the counter is concatenated to the col1-clue-array and the process continues until you reach the last index fof col1 and then that string of clues in finished move to the next column or row
+        
+- Get grid coordinates from user created pictures
+- once submitted, reroute back Nonogram index page
