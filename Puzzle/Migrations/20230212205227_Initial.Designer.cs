@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Nonogram.Models;
+using Puzzle.Models;
 
 #nullable disable
 
-namespace Nonogram.Migrations
+namespace Puzzle.Migrations
 {
     [DbContext(typeof(NonogramContext))]
     [Migration("20230212205227_Initial")]

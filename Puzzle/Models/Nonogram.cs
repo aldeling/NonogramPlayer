@@ -12,7 +12,7 @@ namespace Puzzle.Models
     // public List<List<int>> NonogramRowClues { get; set; }
 
     public List<NonogramPlayer> JoinEntities { get; }
-    // public ApplicationUser User { get; set; }
+    public ApplicationUser User { get; set; }
 
     //public static List<List<int>> GetNonogramClues()
       //this method would run through a nested looping process to determine what the clues are

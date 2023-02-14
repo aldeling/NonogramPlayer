@@ -12,8 +12,8 @@ using Puzzle.Models;
 
 namespace Puzzle.Controllers
 {
-  [Authorize]
-  public class NonogramController : Controller
+  //[Authorize]
+  public class NonogramsController : Controller
   {
     private readonly NonogramContext _db;
     private readonly UserManager<ApplicationUser> _userManager;
@@ -37,23 +37,23 @@ namespace Puzzle.Controllers
       return View();
     }
 
-    [HttpPost]
-    public async Task<ActionResult> Create(Nonogram nonogram)
-    {
-      if (!ModelState.IsVaild)
-      {
-        return View(nonogram);
-      }
-      else
-      {
-        string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
-        nonogram.User = currentUser;
-        _db.Nonograms.Add(nonogram);
-        _db.SaveChanges();
-        return RedirectToAction("Index");
-      }
-    }
+    // [HttpPost]
+    // public async Task<ActionResult> Create(Nonogram nonogram)
+    // {
+    //   if (!ModelState.IsVaild)
+    //   {
+    //     return View(nonogram);
+    //   }
+    //   else
+    //   {
+    //     string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    //     ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+    //     nonogram.User = currentUser;
+    //     _db.Nonograms.Add(nonogram);
+    //     _db.SaveChanges();
+    //     return RedirectToAction("Index");
+    //   }
+    // }
 
     public ActionResult Details(int id)
     {
@@ -73,7 +73,7 @@ namespace Puzzle.Controllers
     [HttpPost]
     public ActionResult Edit (Nonogram nonogram)
     {
-      _db.Nonograms.Update(treat);
+      _db.Nonograms.Update(nonogram);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
