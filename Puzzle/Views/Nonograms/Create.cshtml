@@ -1,0 +1,75 @@
+<style>
+  .game-cell {
+    width:75px;
+    text-align: center;
+  }
+  .game-cell-image {
+    width:85%;
+  }
+  .cell-area {
+    display:flex;
+    flex-wrap:wrap;
+  }
+  .line-break {
+    flex-basis: 100%;
+    height: 0;
+  }
+  .cell-label {
+    font-size 6px;
+    text-align: center;
+  }
+</style>
+
+@* the three cell images below will equate to the three states from -1 being red, 0 being white and black being 1 *@
+@* so we can tie the state as mentioned above to an index of this array with a +1 to the number so getting the red image is just taking the -1 state, adding 1 to get 0 and then invoking that index *@
+@{
+  string[] imagenames = { "redcell.png", "whitecell.png", "blackcell.png"};
+}
+<form>
+  <div class="cell-area"> 
+    @* adjusted for variable grid size needs to be passed in via controller from index to nona.-create after query in Nonogram-Index which asks for  grid height and length*@
+    @* @for (int i = 0; i < Model.NonogramHeight; i++)
+    {
+      //start new line every (length) elements
+      if (i % Model.NonogramWidth == 0) *@
+    @for (int i = 0; i < 5; i++)
+    {
+      //start new line every (length) elements
+      if (i % 8 == 0)
+      {
+        <div class="line-break"></div>
+      }
+    @* Below here we will need to change the wording to basically say, at cellstate + 1 in line with the comment about the imagename array written above*@
+    <button class="game-cell" name="cellNumber" value="@Model.getElement(i).id" type="submit" asp-controller="cell" asp-action="HandleCellCLick">
+      <img class="game-cell-image" src="~/img/@imagenames[Model.ElementAt(i).CellState]" />
+      <div class="game-cell">
+        @* Print here the row and the column and maybe the index it was generated in? maybe we can make the id a composite of the row-column? ex: 1-2 or 4-8 etc*@
+      </div>
+    </button>
+    }
+  </div>
+</form>
+
+
+
+
+
+
+
+@* - create a new nonogram when clicked leads to this page
+- Ask user for grid size as two seperate integers on a form
+  - user submits that, staying on this page, the grid is made.
+  - there are no spaces for clues on the top or left hand side of this grid, just blank spaces to be clicked and filled in
+- Grid is viewable for user to draw on.
+- for each click (or maybe click and drag) the user's mouse coords are checked and the corresponding square is updated
+  - so maybe we have a backend object that represents the game board 
+  for l in length
+    for h in height
+      grid[col1,col2,col3, etc]
+        col1[row1.1,row2.1,row3.1, etc]
+        col2[row1.2,row2.2,row3.2,etc]
+        each row1.1/etc value is a boolean that is equivalent to whether or not the grid square is filled in or not
+        traversing the col1 list, you would start a counter when you first find a true. and the counter starts at one. as you continue for each consecutive true you find, the counter iterates up one. when you encounter your first false the counter is concatenated to the col1-clue-array and the process continues until you reach the last index fof col1 and then that string of clues in finished move to the next column or row
+        
+- Get grid coordinates from user created pictures
+- once submitted, reroute back Nonogram index page *@
