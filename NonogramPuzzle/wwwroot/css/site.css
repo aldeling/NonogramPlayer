@@ -1,0 +1,43 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.puzzleCell {
+  width: 74px;
+  text-align: center;
+  border: none;
+}
+
+.puzzleCellImage {
+  width: 90%;
+}
+
+.cell-zone {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.line-break {
+  flex-basis: 100%;
+  height: 0;
+}
+
+.cellLabel {
+  font-size: 8px;
+  text-align: center;
+}
