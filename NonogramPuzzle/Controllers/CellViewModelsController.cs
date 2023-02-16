@@ -57,17 +57,17 @@ namespace NonogramPuzzle.Controllers
 
     public IActionResult HandleCellClick(string cellNumber ,string height, string width)
     {
-      BoardViewModel model = new BoardViewModel();
-      model.CellViewModels = cells;
-      model.Width = int.Parse(width);
-      model.Height = int.Parse(height);
+
       int cllNmbr = int.Parse(cellNumber);
 
       cells.ElementAt(cllNmbr).CellState = (cells.ElementAt(cllNmbr).CellState +1) % 2;
 
       ViewBag.ShowQuestion = false;
 
-      model.CellViewModels[cllNmbr] = cells.ElementAt(cllNmbr);
+      BoardViewModel model = new BoardViewModel();
+      model.CellViewModels = cells;
+      model.Width = int.Parse(width);
+      model.Height = int.Parse(height);
       
       return View("Build", model);
     }
