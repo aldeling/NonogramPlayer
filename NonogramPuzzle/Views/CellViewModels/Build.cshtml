@@ -1,0 +1,66 @@
+
+@{
+    ViewData["Title"] = "Create a new Nonogram Puzzle";
+}
+
+@using NonogramPuzzle.ViewModels
+@model BoardViewModel
+
+<h2>Create a new Nonogram Puzzle</h2>
+
+@if (ViewBag.ShowQuestion ?? true)
+{
+  @if(!ViewData.ModelState.IsValid)
+  {
+    @Html.ValidationSummary("Please fix the following error(s) and then resubmit the form: ")
+  }
+
+  @using (Html.BeginForm("Build","CellViewModels", "FormMethod.Post"))
+  {
+      @Html.LabelFor(board => board.Height, "Board Height: ")
+      @Html.TextBoxFor(board => board.Height)
+
+      @Html.LabelFor(board => board.Width, "Board Width: ")
+      @Html.TextBoxFor(board => board.Width)
+
+      <input type="submit" value="Build" class="btn btn-prmary"/>
+  }
+}
+else
+{
+  
+  string[] imageNames = {"whitecell.png", "blackcell.png"};
+  int cellCount = @Model.CellViewModels.Count;
+
+  <form> 
+    <div class="cell-zone">
+      <div id = "board-dimensions">
+      </div>
+      @for (int i = 0; i < @Model.CellViewModels.Count(); i++)
+      {
+        if (i % @Model.Width == 0)
+        {
+          <div class="line-break"></div>
+        }
+
+        <div class="puzzleCell">
+          <button name="cellNumber" value="@Model.CellViewModels.ElementAt(i).CellId" type="submit" asp-controller="CellViewModels" asp-action= "HandleCellClick" >
+          <input name="height" value="@Model.Height" type="hidden" asp-controller="CellViewModels" asp-action= "HandleCellClick" ></input>
+          <input name="width" value="@Model.Width" type="hidden" asp-controller="CellViewModels" asp-action= "HandleCellClick" ></input>
+          <img class="puzzleCellImage" src="~/img/@imageNames[Model.CellViewModels.ElementAt(i).CellState]" />
+          <div class="cellLabel">
+            @Model.CellViewModels.ElementAt(i).CellId, @Model.CellViewModels.ElementAt(i).CellState;
+          </div>
+          </button>
+        </div>
+      }
+      <p>The number of cells are: @cellCount</p>
+    </div>
+  </form>
+  }
+  
+
+
+  
+
+
