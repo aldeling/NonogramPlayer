@@ -7,4 +7,6 @@ cosmetic changes to cells and board itself
 ISSUE:
 
 1.cells wraps when the grid is too large for the screen. Also, the click function breaks.
-ex. app breaks at when gridsize is 21 by 21.
+ex. app breaks at when gridsize is 21 by 21. 
+
+**Click function break ISSUE was resolve by moving the input fields out of the for loop 
