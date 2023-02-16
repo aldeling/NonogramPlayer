@@ -39,6 +39,7 @@ namespace NonogramPuzzle.Controllers
       }
       else
       {
+        cells.Clear();
         if (cells.Count < gridSize)
         {
           for( int i = 0; i < gridSize ; i++)

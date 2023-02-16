@@ -3,7 +3,10 @@
     @*Layout = "_Layout";*@
 }
 
+@using NonogramPuzzle.ViewModels
 @model IEnumerable<NonogramPuzzle.ViewModels.CellViewModel>
+
+
 
 <p>
   <a asp-action="Create">Nonogram Creator's Board</a>
@@ -11,7 +14,7 @@
 
 @{
   string[] imageNames = {"whitecell.png", "blackcell.png"};
-  int width = 25;
+  int width = 7;
 }
 
 <form> 
