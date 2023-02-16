@@ -31,6 +31,8 @@ else
 
   <form> 
     <div class="cell-zone">
+      <input name="height" value="@Model.Height" type="hidden" asp-controller="CellViewModels" asp-action= "HandleCellClick" ></input>
+      <input name="width" value="@Model.Width" type="hidden" asp-controller="CellViewModels" asp-action= "HandleCellClick" ></input>
       @for (int i = 0; i < @Model.CellViewModels.Count(); i++)
       {
         if (i % @Model.Width == 0)
@@ -40,8 +42,6 @@ else
 
         <div class="puzzleCell">
           <button name="cellNumber" value="@Model.CellViewModels.ElementAt(i).CellId" type="submit" asp-controller="CellViewModels" asp-action= "HandleCellClick" >
-          <input name="height" value="@Model.Height" type="hidden" asp-controller="CellViewModels" asp-action= "HandleCellClick" ></input>
-          <input name="width" value="@Model.Width" type="hidden" asp-controller="CellViewModels" asp-action= "HandleCellClick" ></input>
           <img class="puzzleCellImage" src="~/img/@imageNames[Model.CellViewModels.ElementAt(i).CellState]" />
           <div class="cellLabel">
             @Model.CellViewModels.ElementAt(i).CellId, @Model.CellViewModels.ElementAt(i).CellState;
