@@ -1,14 +1,14 @@
- @{
+@* @{
     ViewData["Title"] = "Nonogram Grid";
-    @*Layout = "_Layout";*@
 }
 
-@using NonogramPuzzle.ViewModels
-@model IEnumerable<NonogramPuzzle.ViewModels.CellViewModel>
+@using NonogramPuzzle.Models
+@model NonogramPuzzle.Models.Cell
+@model IEnumerable<NonogramPuzzle.ViewModels.CellViewModel> *@
 
 
-@* 
-<p>
+
+@* <p>
   <a asp-action="Create">Nonogram Creator's Board</a>
 </p>
 
@@ -36,5 +36,6 @@
       </div>
     }
   </div>
-</form>  *@
-        
+</form> *@
+
+<p>@Html.ActionLink("Add new Cells", "Create")</p>

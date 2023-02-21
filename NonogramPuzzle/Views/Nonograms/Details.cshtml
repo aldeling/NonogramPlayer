@@ -1,0 +1,34 @@
+
+@{
+    ViewData["Title"] = "Delete a new Nonogram Puzzle";
+}
+
+@model NonogramPuzzle.Models.Nonogram;
+@using NonogramPuzzle.Models;
+@using System.Collections.Generic;
+
+<h2>Nonogram Details</h2>
+<hr />
+<h3>@Html.DisplayNameFor(model => model.NonogramHeight): @Html.DisplayFor(model => model.NonogramHeight)</h3>
+<h3>@Html.DisplayNameFor(model => model.NonogramWidth): @Html.DisplayFor(model => model.NonogramWidth)</h3>
+
+
+@if (@Model.Cells.Count == 0)
+  {
+    <h3>No cells have been added to this Nonogram yet!</h3>
+  }
+  else
+  {
+    <h4>Cells in this Nonogram:</h4>
+    <ul>
+      @foreach (Cell cell in Model.Cells)
+      {
+    
+            <li>Cell Id: @cell.CellId and Cell State: @cell.CellState</li>  
+      }
+    </ul>
+  }
+
+<p>@Html.ActionLink("Edit Nonogram", "Edit", new {id = Model.NonogramId})</p>
+<p>@Html.ActionLink("Delete Nonogram", "Delete", new { id = Model.NonogramId})</p>
+<p>@Html.ActionLink("Back to list", "Index")</p>

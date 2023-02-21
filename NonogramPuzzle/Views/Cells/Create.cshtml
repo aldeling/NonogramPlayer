@@ -1,0 +1,18 @@
+@* @{
+    ViewData["Title"] = "Nonogram Grid";
+}
+
+@model NonogramPuzzle.Models.Cell
+
+<h4>Create Grid</h4>
+@using (Html.BeginForm())
+{
+  
+  @Html.LabelFor(model => model.Nonogram)
+  @Html.DropDownList("NonogramId")
+
+  <input type="submit" value="Add new task" class="btn btn-default"/>
+} *@
+@* <p>@Html.ValidationMessageFor(model => model.CategoryId,"",new {@class = "text-danger", @style ="font-weight: 600;"})</p>
+<p>@Html.ValidationMessageFor(model => model.Description,"", new {@class= "text-danger",@style ="font-weight: 600;"})</p>
+<p>@Html.ActionLink("Show all items", "Index")</p> *@

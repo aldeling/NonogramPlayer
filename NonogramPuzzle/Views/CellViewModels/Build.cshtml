@@ -5,10 +5,10 @@
 @using NonogramPuzzle.ViewModels
 @model BoardViewModel
 
-<h2>Create a new Nonogram Puzzle</h2>
-
-@if (ViewBag.ShowQuestion ?? true)
+@if (ViewBag.ShowQuestion ?? true )
 {
+  <h2>Create a new Nonogram Puzzle</h2>
+
   @if(!ViewData.ModelState.IsValid)
   {
     @Html.ValidationSummary("Please fix the following error(s) and then resubmit the form: ")
@@ -16,20 +16,44 @@
 
   @using (Html.BeginForm("Build","CellViewModels", "FormMethod.Post"))
   {
-      @Html.LabelFor(board => board.Height, "Board Height: ")
-      @Html.TextBoxFor(board => board.Height)
+    
+    @Html.LabelFor(model => model.Nonogram)
+    @Html.DropDownList("NonogrmId")
 
-      @Html.LabelFor(board => board.Width, "Board Width: ")
-      @Html.TextBoxFor(board => board.Width)
+    @Html.DropDownList("NonogramDim")
 
-      <input type="submit" value="Build" class="btn btn-prmary"/>
-  }
+    @Html.DropDownList("NonogramWidth")
+
+    <input type="submit" value="Build" class="btn btn-prmary"/>     
+  } 
 }
 else
 {
+  <h2>Nonogram Puzzle Board</h2>
+
+  @* @using (Html.BeginForm("Create","Cells","FormMethod.Post"))
+  {
+    
+
+    <input type="submit" value="Create" class="btn btn-prmary"/>     
+  } *@
+
+  <form>
+
+    <button name="save" value="Save" type="submit" asp-controller="CellViewModels" asp-action="SavePuzzle">Save Puzzle</button>
+    <br>
+    <br>
+  </form>
+
+
   string[] imageNames = {"whitecell.png", "blackcell.png"};
 
   <form> 
+    @* <div class="nonogramCreate">
+      <input name="height" value="@Model.Height" type="hidden" asp-controller="Nonograms" asp-action="Create"></input>
+      <input name="width" value="@Model.Width" type="hidden" asp-controller="Nonograms" asp-action="Create"></input>
+    </div> *@
+  
     <div class="cell-zone">
       <input name="height" value="@Model.Height" type="hidden" asp-controller="CellViewModels" asp-action= "HandleCellClick" ></input>
       <input name="width" value="@Model.Width" type="hidden" asp-controller="CellViewModels" asp-action= "HandleCellClick" ></input>
@@ -44,11 +68,21 @@ else
           <button name="cellNumber" value="@Model.CellViewModels.ElementAt(i).CellId" type="submit" asp-controller="CellViewModels" asp-action= "HandleCellClick" >
           <img class="puzzleCellImage" src="~/img/@imageNames[Model.CellViewModels.ElementAt(i).CellState]" />
           <div class="cellLabel">
-            @Model.CellViewModels.ElementAt(i).CellId, @Model.CellViewModels.ElementAt(i).CellState;
+            @Model.CellViewModels.ElementAt(i).CellId, @Model.CellViewModels.ElementAt(i).NonogramId ;
           </div>
           </button>
-        </div>
-      }
+        </div> 
+      }  
     </div>
   </form>
+
+  @* <form>
+     @using (Html.BeginForm("SavePuzzle","CellViewModels", "FormMethod.Post"))
+    {
+      //<input type="submit" value="Save" />
+      <br>
+      <br>
+      <input type="submit" value="Save Puzzle" class="btn btn-prmary"/>     
+    } 
+  </form> *@
 }

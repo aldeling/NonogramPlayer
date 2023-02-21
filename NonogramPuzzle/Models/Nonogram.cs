@@ -6,15 +6,21 @@ namespace NonogramPuzzle.Models
   public class Nonogram
   {
     public int NonogramId { get; set; }
+
+    [Required(ErrorMessage = "The Nonogram board width is required.")]
     public int NonogramWidth { get; set; }
-    public int NonogramHeight { get; set; }
+
+    [Required(ErrorMessage = "The Nonogram board Height is required.")]      public int NonogramHeight { get; set; }
     // public List<List<int>> NonogramColClues { get; set; }
     // public List<List<int>> NonogramRowClues { get; set; }
 
-    public List<NonogramPlayer> JoinEntities { get; }
-    public ApplicationUser User { get; set; }
+    public int NonogramDim { get; set; }
 
-    //public static List<List<int>> GetNonogramClues()
+    // public Nonogram ()
+    // {
+    //   NonogramDim = NonogramHeight * NonogramWidth;
+    // }
+    public List<Cell> Cells { get; set; }
       //this method would run through a nested looping process to determine what the clues are
   }
 }

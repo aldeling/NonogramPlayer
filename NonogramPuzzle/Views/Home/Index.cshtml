@@ -5,6 +5,11 @@
 @using NonogramPuzzle.Models
 
 <h1>Nonogram</h1>
+
+<p class="text-danger">@TempData["PuzzeSavedMessage"]</p>
+  
+
 <p>@Html.ActionLink("Read Rules", "Rules")</p>
-<p>@Html.ActionLink("Nonogram Puzzles", "Index", "Nonogram")</p>
+<p>@Html.ActionLink("Nonogram Puzzles", "Index", "Nonograms")</p>
 <p>@Html.ActionLink("Build a Nonogram Puzzle", "Build", "CellViewModels")</p>
+<p>@Html.ActionLink("Manage Grid", "Index", "Cells")</p>

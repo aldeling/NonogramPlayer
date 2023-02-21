@@ -1,1 +1,15 @@
-delete nonograms created by that specific user
+@{
+    ViewData["Title"] = "Create a new Nonogram Puzzle";
+}
+
+@model NonogramPuzzle.Models.Nonogram
+
+<h2>Are you sure you want to delete this?</h2>
+
+@Html.DisplayNameFor(model => model.NonogramId): @Html.DisplayFor(model => model.NonogramHeight)
+@using (Html.BeginForm())
+{
+  <input type="submit" value="Delete" />
+}
+
+@Html.ActionLink("Back to List", "Index")
