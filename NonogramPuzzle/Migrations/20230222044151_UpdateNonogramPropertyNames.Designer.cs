@@ -10,8 +10,8 @@ using NonogramPuzzle.Models;
 namespace NonogramPuzzle.Migrations
 {
     [DbContext(typeof(NonogramPuzzleContext))]
-    [Migration("20230221215007_AddNonogramSolvingBoardWidthHeightDimProperty")]
-    partial class AddNonogramSolvingBoardWidthHeightDimProperty
+    [Migration("20230222044151_UpdateNonogramPropertyNames")]
+    partial class UpdateNonogramPropertyNames
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,10 +57,10 @@ namespace NonogramPuzzle.Migrations
                     b.Property<int>("solvingBoardDim")
                         .HasColumnType("int");
 
-                    b.Property<int>("solvingBoardWidth")
+                    b.Property<int>("solvingBoardHeight")
                         .HasColumnType("int");
 
-                    b.Property<int>("solvingBoardHeight")
+                    b.Property<int>("solvingBoardWidth")
                         .HasColumnType("int");
 
                     b.HasKey("NonogramId");

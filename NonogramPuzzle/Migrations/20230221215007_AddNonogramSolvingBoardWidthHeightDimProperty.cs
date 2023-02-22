@@ -9,7 +9,7 @@ namespace NonogramPuzzle.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "solvigBoardDim",
+                name: "solvingBoardDim",
                 table: "Nonograms",
                 type: "int",
                 nullable: false,
@@ -23,7 +23,7 @@ namespace NonogramPuzzle.Migrations
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "sovlingBoardHeight",
+                name: "solvingBoardHeight",
                 table: "Nonograms",
                 type: "int",
                 nullable: false,
@@ -33,7 +33,7 @@ namespace NonogramPuzzle.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "solvigBoardDim",
+                name: "solvingBoardDim",
                 table: "Nonograms");
 
             migrationBuilder.DropColumn(
@@ -41,7 +41,7 @@ namespace NonogramPuzzle.Migrations
                 table: "Nonograms");
 
             migrationBuilder.DropColumn(
-                name: "sovlingBoardHeight",
+                name: "solvingBoardHeight",
                 table: "Nonograms");
         }
     }

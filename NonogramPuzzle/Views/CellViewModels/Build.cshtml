@@ -31,29 +31,15 @@ else
 {
   <h2>Nonogram Puzzle Board</h2>
 
-  @* @using (Html.BeginForm("Create","Cells","FormMethod.Post"))
-  {
-    
-
-    <input type="submit" value="Create" class="btn btn-prmary"/>     
-  } *@
-
   <form>
-
     <button name="save" value="Save" type="submit" asp-controller="CellViewModels" asp-action="SavePuzzle">Save Puzzle</button>
     <br>
     <br>
   </form>
 
-
   string[] imageNames = {"whitecell.png", "blackcell.png"};
 
   <form> 
-    @* <div class="nonogramCreate">
-      <input name="height" value="@Model.Height" type="hidden" asp-controller="Nonograms" asp-action="Create"></input>
-      <input name="width" value="@Model.Width" type="hidden" asp-controller="Nonograms" asp-action="Create"></input>
-    </div> *@
-  
     <div class="cell-zone">
       <input name="height" value="@Model.Height" type="hidden" asp-controller="CellViewModels" asp-action= "HandleCellClick" ></input>
       <input name="width" value="@Model.Width" type="hidden" asp-controller="CellViewModels" asp-action= "HandleCellClick" ></input>
@@ -75,14 +61,4 @@ else
       }  
     </div>
   </form>
-
-  @* <form>
-     @using (Html.BeginForm("SavePuzzle","CellViewModels", "FormMethod.Post"))
-    {
-      //<input type="submit" value="Save" />
-      <br>
-      <br>
-      <input type="submit" value="Save Puzzle" class="btn btn-prmary"/>     
-    } 
-  </form> *@
 }

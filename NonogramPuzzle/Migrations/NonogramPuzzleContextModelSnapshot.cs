@@ -52,13 +52,13 @@ namespace NonogramPuzzle.Migrations
                     b.Property<int>("NonogramWidth")
                         .HasColumnType("int");
 
-                    b.Property<int>("solvigBoardDim")
+                    b.Property<int>("solvingBoardDim")
+                        .HasColumnType("int");
+
+                    b.Property<int>("solvingBoardHeight")
                         .HasColumnType("int");
 
                     b.Property<int>("solvingBoardWidth")
-                        .HasColumnType("int");
-
-                    b.Property<int>("sovlingBoardHeight")
                         .HasColumnType("int");
 
                     b.HasKey("NonogramId");

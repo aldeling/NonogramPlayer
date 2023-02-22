@@ -10,8 +10,7 @@ namespace NonogramPuzzle.ViewModels
     
     [Required]
     public int Height { get; set; }
-
-    public int NonogramId { get; set;}
+    //public int NonogramId { get; set;}
     public Nonogram Nonogram { get; set; }
 
     public List<CellViewModel> CellViewModels { get; set; } = new List<CellViewModel> ();

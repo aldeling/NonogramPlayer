@@ -2,8 +2,6 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 using NonogramPuzzle.Models;
 using NonogramPuzzle.ViewModels;
@@ -18,20 +16,16 @@ namespace NonogramPuzzle.Controllers
 
     public CellViewModelsController(NonogramPuzzleContext db)
     {
-
       _db = db;
     }
 
     public IActionResult Index()
     {
-      
-
       return View(cells);
     }
 
     public IActionResult Build()
     {
-      //ViewBag.ShowQuestion = true;
       ViewBag.NonogrmId = new SelectList( _db.Nonograms, "NonogramId", "NonogramId");
       ViewBag.NonogramDim = new SelectList(_db.Nonograms,"NonogramDim", "NonogramDim");
       ViewBag.NonogramWidth = new SelectList(_db.Nonograms,"NonogramWidth", "NonogramWidth");
@@ -42,14 +36,13 @@ namespace NonogramPuzzle.Controllers
     [HttpPost]
     public IActionResult Build(int NonogrmId, int NonogramDim, int NonogramWidth)
     {
-
+      //Validation related, not tested:
       // if (!ModelState.IsValid)
       // {
       //   return View(model);
       // }
       // else
       // {
-    
         BoardViewModel model = new BoardViewModel();
         model.Width = NonogramWidth;
         model.Height = NonogramDim / NonogramWidth;
@@ -72,34 +65,22 @@ namespace NonogramPuzzle.Controllers
       // }
     }
 
-    
     public IActionResult SavePuzzle(string save)
     {
-
       for (int i = 0; i < cells.Count(); i++)
       {
-      
         Cell cell = new Cell();
         cell.CellState = cells.ElementAt(i).CellState;
         cell.NonogramId = cells.ElementAt(i).NonogramId;
         _db.Cells.Add(cell);
         _db.SaveChanges(); 
       }
-      
-      // BoardViewModel model = new BoardViewModel();
-      // model.CellViewModels = cells;
-
-      // TempData["cellList"] = cells;
-
-      //return RedirectToAction("Create", "Cells");
 
       return RedirectToAction("Index", "Home");
-
     }
 
     public IActionResult HandleCellClick(string cellNumber ,string height, string width)
     {
-
       int cllNmbr = int.Parse(cellNumber);
 
       cells.ElementAt(cllNmbr).CellState = (cells.ElementAt(cllNmbr).CellState +1) % 2;
@@ -113,8 +94,6 @@ namespace NonogramPuzzle.Controllers
       
       return View("Build", model);
     }
-    
-
   }
 }
 

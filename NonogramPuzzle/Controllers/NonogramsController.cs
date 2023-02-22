@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 
 using NonogramPuzzle.Models;
-using NonogramPuzzle.ViewModels;
 
 namespace NonogramPuzzle.Controllers
 {
@@ -35,7 +34,7 @@ namespace NonogramPuzzle.Controllers
     [HttpPost]
     public ActionResult Create(Nonogram nonogram)
     {
-       nonogram.NonogramDim = nonogram.NonogramWidth * nonogram.NonogramWidth;
+      nonogram.NonogramDim = nonogram.NonogramWidth * nonogram.NonogramHeight;
       _db.Nonograms.Add(nonogram);
       _db.SaveChanges();
   
@@ -44,14 +43,10 @@ namespace NonogramPuzzle.Controllers
 
     public ActionResult Details(int id)
     {
-      // Nonogram thisNonogram = _db.Nonograms
-      //   .FirstOrDefault(nonogram => nonogram.NonogramId == id);
-      // return View(thisNonogram);
-
       Nonogram thisNonogram = _db.Nonograms.Include(nono => nono.Cells)
       .FirstOrDefault(nonogram => nonogram.NonogramId == id);
 
-      //calcualing dimension for empty boad with clues included
+      //calculating dimension for empty board with clues included
 
       int width = thisNonogram.NonogramWidth;
       int height = thisNonogram.NonogramHeight;
@@ -61,7 +56,6 @@ namespace NonogramPuzzle.Controllers
 
       //calculation board height, accounting for max. number of clues in the columns
       // i = rows/Height, j = columns/width
-
       for(int j = 0; j < width ; j++)
       {
         int maxColClueCount = 0;
@@ -78,7 +72,6 @@ namespace NonogramPuzzle.Controllers
             maxColClueCount ++;
           }
         }
-
         if( maxHeight < maxColClueCount)
         {
           maxHeight = maxColClueCount;
@@ -86,12 +79,10 @@ namespace NonogramPuzzle.Controllers
       }
 
       //calculation board width, account for max. clues in the rows
-      
       int maxRowClueCount = 0;
 
       for(int i = 0 ; i < boardSize; i ++)
       {
-
         if ( i % (width) == 0 && i != 0)
         {
           if(maxWidth < maxRowClueCount)
@@ -114,31 +105,27 @@ namespace NonogramPuzzle.Controllers
       }
 
       thisNonogram.solvingBoardWidth = maxWidth + width;
-      thisNonogram.sovlingBoardHeight = maxHeight + height;
-      thisNonogram.solvigBoardDim = (thisNonogram.solvingBoardWidth * thisNonogram.sovlingBoardHeight);
+      thisNonogram.solvingBoardHeight = maxHeight + height;
+      thisNonogram.solvingBoardDim = (thisNonogram.solvingBoardWidth * thisNonogram.solvingBoardHeight);
       
       thisNonogram.Cells.Clear();
 
-      if (thisNonogram.Cells.Count < thisNonogram.solvigBoardDim)
+      if (thisNonogram.Cells.Count < thisNonogram.solvingBoardDim)
       {
-        for( int i = 0; i < thisNonogram.solvigBoardDim; i++)
+        for( int i = 0; i < thisNonogram.solvingBoardDim; i++)
         {
           thisNonogram.Cells.Add(new Cell { CellId = i, CellState = 0, NonogramId = id});
         }
-        // thisNonogram.Cells.ElementAt(0).CellState = 1;
-        // thisNonogram.Cells.ElementAt(1).CellState = 1;
-        // thisNonogram.Cells.ElementAt(7).CellState = 1;
-        // thisNonogram.Cells.ElementAt(8).CellState = 1;
       }
 
       for( int j = 0 ; j < maxWidth ; j++)
-       {
-         int i = j + thisNonogram.solvingBoardWidth;
-         thisNonogram.Cells.ElementAt(j).CellState = 1;
-         thisNonogram.Cells.ElementAt(i).CellState = 1; 
-       }
+      {
+        int i = j + thisNonogram.solvingBoardWidth;
+        thisNonogram.Cells.ElementAt(j).CellState = 1;
+        thisNonogram.Cells.ElementAt(i).CellState = 1; 
+      }
 
-       //This will not be saved in the database
+      //This will not be saved in the database
       return View(thisNonogram);
     }
 
