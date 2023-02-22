@@ -3,33 +3,27 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
-using System.Security.Claims;
+
 
 using NonogramPuzzle.Models;
 
 namespace NonogramPuzzle.Controllers
 {
-  //[Authorize]
   public class NonogramsController : Controller
   {
     private readonly NonogramPuzzleContext _db;
-    private readonly UserManager<ApplicationUser> _userManager;
     
-    public NonogramsController(UserManager<ApplicationUser> userManager, NonogramPuzzleContext db)
+    public NonogramsController(NonogramPuzzleContext db)
     {
-      _userManager = userManager;
+
       _db = db;
     }
 
-    public async Task<ActionResult> Index()
+    public ActionResult Index()
     {
-      string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-      ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
-
-      return View();
+      List<Nonogram> model = _db.Nonograms.ToList();
+      return View(model);
     }
 
     public ActionResult Create()
@@ -37,32 +31,105 @@ namespace NonogramPuzzle.Controllers
       return View();
     }
 
-    // [HttpPost]
-    // public async Task<ActionResult> Create(Nonogram nonogram)
-    // {
-    //   if (!ModelState.IsVaild)
-    //   {
-    //     return View(nonogram);
-    //   }
-    //   else
-    //   {
-    //     string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    //     ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
-    //     nonogram.User = currentUser;
-    //     _db.Nonograms.Add(nonogram);
-    //     _db.SaveChanges();
-    //     return RedirectToAction("Index");
-    //   }
-    // }
+    [HttpPost]
+    public ActionResult Create(Nonogram nonogram)
+    {
+      nonogram.NonogramDim = nonogram.NonogramWidth * nonogram.NonogramHeight;
+      _db.Nonograms.Add(nonogram);
+      _db.SaveChanges();
+  
+      return RedirectToAction("Build","CellViewModels");
+    }
 
     public ActionResult Details(int id)
     {
-      Nonogram thisNonogram = _db.Nonograms
-        .Include(nonogram => nonogram.JoinEntities)
-        .ThenInclude(join => join.Player)
-        .FirstOrDefault(nonogram => nonogram.NonogramId == id);
+      Nonogram thisNonogram = _db.Nonograms.Include(nono => nono.Cells)
+      .FirstOrDefault(nonogram => nonogram.NonogramId == id);
+
+      //calculating dimension for empty board with clues included
+
+      int width = thisNonogram.NonogramWidth;
+      int height = thisNonogram.NonogramHeight;
+      int boardSize = width * height;//thisNonogram.NonogramDim;
+      int maxHeight = 0;
+      int maxWidth = 0;
+
+      //calculation board height, accounting for max. number of clues in the columns
+      // i = rows/Height, j = columns/width
+      for(int j = 0; j < width ; j++)
+      {
+        int maxColClueCount = 0;
+
+        for(int i = j ; i <= (boardSize - (width - j)); i = (i + width ))
+        {
+          int previousCell = i;
+          if (i >= width)
+          {
+            previousCell = i - width;
+          }
+          if (((thisNonogram.Cells.ElementAt(i).CellState == 1) && (i < width)) || ((thisNonogram.Cells.ElementAt(i).CellState == 1) && (thisNonogram.Cells.ElementAt(previousCell).CellState == 0)))
+          {
+            maxColClueCount ++;
+          }
+        }
+        if( maxHeight < maxColClueCount)
+        {
+          maxHeight = maxColClueCount;
+        }
+      }
+
+      //calculation board width, account for max. clues in the rows
+      int maxRowClueCount = 0;
+
+      for(int i = 0 ; i < boardSize; i ++)
+      {
+        if ( i % (width) == 0 && i != 0)
+        {
+          if(maxWidth < maxRowClueCount)
+          {
+            maxWidth = maxRowClueCount;
+          }
+
+          maxRowClueCount = 0;
+        }
+        int previousCell = i;
+        if (i % width != 0)
+        {
+          previousCell = i-1;
+        }
+
+        if (((thisNonogram.Cells.ElementAt(i).CellState == 1) && (i % width == 0)) || (thisNonogram.Cells.ElementAt(i).CellState == 1) && (thisNonogram.Cells.ElementAt(previousCell).CellState == 0))
+          {
+            maxRowClueCount++;
+          }  
+      }
+
+      thisNonogram.solvingBoardWidth = maxWidth + width;
+      thisNonogram.solvingBoardHeight = maxHeight + height;
+      thisNonogram.solvingBoardDim = (thisNonogram.solvingBoardWidth * thisNonogram.solvingBoardHeight);
+      
+      thisNonogram.Cells.Clear();
+
+      if (thisNonogram.Cells.Count < thisNonogram.solvingBoardDim)
+      {
+        for( int i = 0; i < thisNonogram.solvingBoardDim; i++)
+        {
+          thisNonogram.Cells.Add(new Cell { CellId = i, CellState = 0, NonogramId = id});
+        }
+      }
+
+      for( int j = 0 ; j < maxWidth ; j++)
+      {
+        int i = j + thisNonogram.solvingBoardWidth;
+        thisNonogram.Cells.ElementAt(j).CellState = 1;
+        thisNonogram.Cells.ElementAt(i).CellState = 1; 
+      }
+
+      //This will not be saved in the database
       return View(thisNonogram);
     }
+
+
 
     public ActionResult Edit(int id)
     {

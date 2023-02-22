@@ -1,3 +1,6 @@
 obj/
 bin/
 appsettings.json
+.DS_Store
+.DS_Store?
+._*
