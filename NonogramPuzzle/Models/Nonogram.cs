@@ -14,11 +14,15 @@ namespace NonogramPuzzle.Models
     // public List<List<int>> NonogramColClues { get; set; }
     // public List<List<int>> NonogramRowClues { get; set; }
 
-    public int NonogramDim { get; set; }
+    public int NonogramDim { get; set; } = 0;
 
     // public Nonogram ()
     // {
     //   NonogramDim = NonogramHeight * NonogramWidth;
+
+    public int solvingBoardWidth { get; set; } = 0;
+    public int sovlingBoardHeight { get; set; } = 0;
+    public int solvigBoardDim { get; set; }  = 0;
     // }
     public List<Cell> Cells { get; set; }
       //this method would run through a nested looping process to determine what the clues are

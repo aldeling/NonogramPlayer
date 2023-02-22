@@ -113,6 +113,7 @@ namespace NonogramPuzzle.Controllers
       
       return View("Build", model);
     }
+    
 
   }
 }

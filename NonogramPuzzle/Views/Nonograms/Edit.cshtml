@@ -1,1 +1,23 @@
-edit previous made nonograms
+@model NonogramPuzzle.Models.Nonogram
+<div class="container">
+  <h2>Edit</h2>
+
+  <h4>Edit this nonogram: @Html.DisplayFor(model => model.NonogramId)</h4>
+
+  @using (Html.BeginForm())
+  {
+    @Html.HiddenFor(model => model.NonogramId)
+    
+    @Html.LabelFor(model => model.NonogramWidth)
+    @Html.EditorFor(model => model.NonogramWidth)
+
+    @Html.LabelFor(model => model.NonogramHeight)
+    @Html.EditorFor(model => model.NonogramHeight)
+
+    <input type="submit" value="Save" />
+  }
+  <p>@Html.ActionLink("Back to list", "Index")</p>
+  @Html.ActionLink("Delete", "Delete")
+  
+
+</div>

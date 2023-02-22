@@ -13,7 +13,8 @@ namespace NonogramPuzzle.Controllers
   public class CellsController : Controller
   {
     private readonly NonogramPuzzleContext _db;
-    
+    static List<Cell> cells = new List<Cell>();
+
     public CellsController(NonogramPuzzleContext db)
     {
 
@@ -59,5 +60,22 @@ namespace NonogramPuzzle.Controllers
 
       return RedirectToAction("Index", "Home");
     } 
+
+    // public IActionResult HandleCellClickSolve(string cellNumber)
+    // {
+
+    //   int cllNmbr = int.Parse(cellNumber);
+
+    //   cells.ElementAt(cllNmbr).CellState = (cells.ElementAt(cllNmbr).CellState +1) % 2;
+
+    //   ViewBag.ShowQuestion = false;
+
+    // //   Nonogram model = new BoardViewModel();
+    // //   model. = cells;
+    // //  //model.Width = int.Parse(width);
+    // //   //model.Height = int.Parse(height);
+      
+    //   return RedirectToAction("Details", "Nonograms", model);
+    // }
   }
 }
