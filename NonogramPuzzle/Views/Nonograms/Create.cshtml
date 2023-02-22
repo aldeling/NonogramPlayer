@@ -7,6 +7,9 @@
 
 <h2>Create a new Nonogram Puzzle</h2>
 
+<p>@Html.ValidationMessageFor(model => model.NonogramHeight,"",new {@class = "text-danger", @style ="font-weight: 600;"})</p>
+<p>@Html.ValidationMessageFor(model => model.NonogramWidth,"", new {@class= "text-danger",@style ="font-weight: 600;"})</p>
+
   @using (Html.BeginForm("Create","Nonograms","FormMethod.Post"))
   {
       @Html.LabelFor(model => model.NonogramHeight, "Board Height: ")
@@ -18,5 +21,4 @@
       <input type="submit" value="Create" class="btn btn-prmary"/>     
   } 
 
-<p>@Html.ValidationMessageFor(model => model.NonogramHeight,"",new {@class = "text-danger", @style ="font-weight: 600;"})</p>
-<p>@Html.ValidationMessageFor(model => model.NonogramWidth,"", new {@class= "text-danger",@style ="font-weight: 600;"})</p>
+

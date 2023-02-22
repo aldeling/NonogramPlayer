@@ -36,9 +36,16 @@ namespace NonogramPuzzle.Controllers
     [HttpPost]
     public ActionResult Create(Nonogram nonogram)
     {
-      nonogram.NonogramDim = nonogram.NonogramWidth * nonogram.NonogramHeight;
-      _db.Nonograms.Add(nonogram);
-      _db.SaveChanges();
+      if (!ModelState.IsValid)
+      {
+        return View(nonogram);
+      }
+      else
+      {
+        nonogram.NonogramDim = nonogram.NonogramWidth * nonogram.NonogramHeight;
+        _db.Nonograms.Add(nonogram);
+        _db.SaveChanges();
+      }
 
       return RedirectToAction("Build","CellViewModels");
     }
@@ -192,19 +199,5 @@ namespace NonogramPuzzle.Controllers
 
       return View("Details", model);
     }
-
-    // public IActionResult HandleCellClick(string cellNumber ,string height, string width)
-    // {
-    //   int cllNmbr = int.Parse(cellNumber);
-
-    //   cellsList.ElementAt(cllNmbr).CellState = (cellsList.ElementAt(cllNmbr).CellState +1) % 2;
-
-    //   BoardViewModel model = new BoardViewModel();
-    //   model.CellViewModels = cellsList;
-    //   model.Width = int.Parse(width);
-    //   model.Height = int.Parse(height);
-      
-    //   return View("Build", model);
-    // }
   }
 }

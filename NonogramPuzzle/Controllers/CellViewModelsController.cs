@@ -58,7 +58,7 @@ namespace NonogramPuzzle.Controllers
       // }
     }
 
-    public IActionResult SavePuzzle(string save)
+    public ActionResult SavePuzzle(string save)
     {
       for (int i = 0; i < cells.Count(); i++)
       {
@@ -69,6 +69,10 @@ namespace NonogramPuzzle.Controllers
         _db.SaveChanges(); 
       }
 
+      string messageFromAssignAnEngineer = TempData["NonoGramSavedMessage"] as string;
+
+      TempData["NonoGramSavedMessage"]= "Woo Hoo!! Nonogram Puzzle SAVED!!!";
+      
       return RedirectToAction("Index", "Home");
     }
 
