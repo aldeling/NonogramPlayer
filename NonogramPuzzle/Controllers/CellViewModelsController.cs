@@ -78,8 +78,6 @@ namespace NonogramPuzzle.Controllers
 
       cells.ElementAt(cllNmbr).CellState = (cells.ElementAt(cllNmbr).CellState +1) % 2;
 
-      ViewBag.ShowQuestion = false;
-
       BoardViewModel model = new BoardViewModel();
       model.CellViewModels = cells;
       model.Width = int.Parse(width);

@@ -1,6 +1,6 @@
 
 @{
-    ViewData["Title"] = "Delete a new Nonogram Puzzle";
+    ViewData["Title"] = " Solve Nonogram Puzzle";
 }
 
 @model NonogramPuzzle.Models.Nonogram;
@@ -9,13 +9,38 @@
 
 <h2>Nonogram Details</h2>
 <hr />
-<h3>@Html.DisplayNameFor(model => model.NonogramHeight): @Html.DisplayFor(model => model.NonogramHeight)</h3>
-<h3>@Html.DisplayNameFor(model => model.NonogramWidth): @Html.DisplayFor(model => model.NonogramWidth)</h3>
-<h3>@Html.DisplayNameFor(model => model.NonogramDim): @Html.DisplayFor(model => model.NonogramDim)</h3>
-<h3>@Html.DisplayNameFor(model => model.solvingBoardDim): @Html.DisplayFor(model => model.solvingBoardDim)</h3>
-<h3>@Html.DisplayNameFor(model => model.solvingBoardWidth): @Html.DisplayFor(model => model.solvingBoardWidth)</h3>
-<h3>@Html.DisplayNameFor(model => model.solvingBoardHeight): @Html.DisplayFor(model => model.solvingBoardHeight)</h3>
+<h3> Playing Board:  Height- @Html.DisplayFor(model => model.NonogramHeight), Board Width - @Html.DisplayFor(model => model.NonogramWidth), Area: @Html.DisplayFor(model => model.NonogramDim)</h3> 
 
+@{
+<h3>Solving Board : Height: @Html.DisplayFor(model => model.solvingBoardHeight), Width - @Html.DisplayFor(model => model.solvingBoardWidth),  Solving Board Area: @Html.DisplayFor(model => model.solvingBoardDim)</h3>
+
+@* add red? *@
+    string[] imageNames = {"whitecell.png", "blackcell.png"};
+  }
+
+
+ <form> 
+  <div class="cell-zone">
+    <input name="id" value="@Model.NonogramId" type="hidden" asp-controller="Nonograms" asp-action= "HandleCellClickSolve" ></input>
+
+    @for (int i = 0; i < @Model.Cells.Count(); i++)
+    {
+      if (i % @Model.solvingBoardWidth == 0)
+      {
+        <div class="line-break"></div>
+      }
+
+      <div class="puzzleCell">
+        <button name="cellNumber" value="@Model.Cells.ElementAt(i).CellId" type="submit" asp-controller="Nonograms" asp-action= "HandleCellClickSolve" >
+        <img class="puzzleCellImage" src="~/img/@imageNames[Model.Cells.ElementAt(i).CellState]" />
+        <div class="cellLabel">
+          @Model.Cells.ElementAt(i).CellId, @Model.Cells.ElementAt(i).NonogramId ;
+        </div>
+        </button>
+      </div> 
+    }  
+  </div>
+</form>
 
 @if (@Model.Cells.Count == 0)
 {
@@ -39,34 +64,6 @@ else
   <br>
   <br>
 </form>
-
-@* add red? *@
-@{
-    string[] imageNames = {"whitecell.png", "blackcell.png"};
-  }
-
-<form> 
-  <div class="cell-zone">
-    @for (int i = 0; i < @Model.Cells.Count(); i++)
-    {
-      if (i % @Model.solvingBoardWidth == 0)
-      {
-        <div class="line-break"></div>
-      }
-
-      <div class="puzzleCell">
-        <button name="cellNumber" value="@Model.Cells.ElementAt(i).CellId" type="submit" asp-controller="Cells" asp-action= "HandleCellClickSolve" >
-        <img class="puzzleCellImage" src="~/img/@imageNames[Model.Cells.ElementAt(i).CellState]" />
-        <div class="cellLabel">
-          @Model.Cells.ElementAt(i).CellId, @Model.Cells.ElementAt(i).NonogramId ;
-        </div>
-        </button>
-      </div> 
-    }  
-  </div>
-</form>
-
-  
 
 <p>@Html.ActionLink("Edit Nonogram", "Edit", new {id = Model.NonogramId})</p>
 <p>@Html.ActionLink("Delete Nonogram", "Delete", new { id = Model.NonogramId})</p>
