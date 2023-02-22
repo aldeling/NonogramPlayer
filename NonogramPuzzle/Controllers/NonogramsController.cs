@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 
 using NonogramPuzzle.Models;
+using NonogramPuzzle.ViewModels;
 
 namespace NonogramPuzzle.Controllers
 {
@@ -37,7 +38,7 @@ namespace NonogramPuzzle.Controllers
       nonogram.NonogramDim = nonogram.NonogramWidth * nonogram.NonogramHeight;
       _db.Nonograms.Add(nonogram);
       _db.SaveChanges();
-  
+
       return RedirectToAction("Build","CellViewModels");
     }
 

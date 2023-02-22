@@ -26,16 +26,6 @@ namespace NonogramPuzzle.Controllers
 
     public IActionResult Build()
     {
-      ViewBag.NonogrmId = new SelectList( _db.Nonograms, "NonogramId", "NonogramId");
-      ViewBag.NonogramDim = new SelectList(_db.Nonograms,"NonogramDim", "NonogramDim");
-      ViewBag.NonogramWidth = new SelectList(_db.Nonograms,"NonogramWidth", "NonogramWidth");
-
-      return View();
-    }
-
-    [HttpPost]
-    public IActionResult Build(int NonogrmId, int NonogramDim, int NonogramWidth)
-    {
       //Validation related, not tested:
       // if (!ModelState.IsValid)
       // {
@@ -43,25 +33,28 @@ namespace NonogramPuzzle.Controllers
       // }
       // else
       // {
-        BoardViewModel model = new BoardViewModel();
-        model.Width = NonogramWidth;
-        model.Height = NonogramDim / NonogramWidth;
+  
+      Nonogram newNonogram = _db.Nonograms.ToList().LastOrDefault();
 
-        int gridSize = NonogramDim;
-        cells.Clear();
+      BoardViewModel model = new BoardViewModel();
+      model.NonogramId= newNonogram.NonogramId;
+      model.Width = newNonogram.NonogramWidth;
+      model.Height = newNonogram.NonogramHeight;
+      model.BoardDim = newNonogram.NonogramDim;
+      cells.Clear();
 
-        if (cells.Count < gridSize)
+      if (cells.Count < model.BoardDim)
+      {
+        for( int i = 0; i < model.BoardDim ; i++)
         {
-          for( int i = 0; i < gridSize ; i++)
-          {
-            cells.Add(new CellViewModel { CellId = i, CellState = 0, NonogramId = NonogrmId});
-          }
-          model.CellViewModels = cells;
+          cells.Add(new CellViewModel { CellId = i, CellState = 0, NonogramId = model.NonogramId});
         }
+          model.CellViewModels = cells;
+      }
 
-        ViewBag.ShowQuestion = false;
+      ViewBag.ShowQuestion = false;
         
-        return View (model);
+      return View (model);
       // }
     }
 
