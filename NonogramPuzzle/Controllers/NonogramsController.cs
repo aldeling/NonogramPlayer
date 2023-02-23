@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 
 using NonogramPuzzle.Models;
+using NonogramPuzzle.ViewModels;
 
 namespace NonogramPuzzle.Controllers
 {
   public class NonogramsController : Controller
   {
+    static List<Cell> cellList = new List<Cell>();
     private readonly NonogramPuzzleContext _db;
     
     public NonogramsController(NonogramPuzzleContext db)
@@ -34,10 +36,17 @@ namespace NonogramPuzzle.Controllers
     [HttpPost]
     public ActionResult Create(Nonogram nonogram)
     {
-      nonogram.NonogramDim = nonogram.NonogramWidth * nonogram.NonogramHeight;
-      _db.Nonograms.Add(nonogram);
-      _db.SaveChanges();
-  
+      if (!ModelState.IsValid)
+      {
+        return View(nonogram);
+      }
+      else
+      {
+        nonogram.NonogramDim = nonogram.NonogramWidth * nonogram.NonogramHeight;
+        _db.Nonograms.Add(nonogram);
+        _db.SaveChanges();
+      }
+
       return RedirectToAction("Build","CellViewModels");
     }
 
@@ -50,7 +59,7 @@ namespace NonogramPuzzle.Controllers
 
       int width = thisNonogram.NonogramWidth;
       int height = thisNonogram.NonogramHeight;
-      int boardSize = width * height;//thisNonogram.NonogramDim;
+      int boardSize = thisNonogram.NonogramDim;//width * height;//thisNonogram.NonogramDim;
       int maxHeight = 0;
       int maxWidth = 0;
 
@@ -107,15 +116,23 @@ namespace NonogramPuzzle.Controllers
       thisNonogram.solvingBoardWidth = maxWidth + width;
       thisNonogram.solvingBoardHeight = maxHeight + height;
       thisNonogram.solvingBoardDim = (thisNonogram.solvingBoardWidth * thisNonogram.solvingBoardHeight);
-      
-      thisNonogram.Cells.Clear();
 
-      if (thisNonogram.Cells.Count < thisNonogram.solvingBoardDim)
+      //Saving SolvingBoard Width, Height, and Dim to data base
+      _db.Nonograms.Update(thisNonogram);
+      _db.SaveChanges();
+      
+      //clearing the static List object cellList, to preventing additional cells from being add when
+      //cell states are being updated and puzzle board refreshes.
+      cellList.Clear();
+    
+      if (cellList.Count < thisNonogram.solvingBoardDim)
       {
         for( int i = 0; i < thisNonogram.solvingBoardDim; i++)
         {
-          thisNonogram.Cells.Add(new Cell { CellId = i, CellState = 0, NonogramId = id});
+          cellList.Add(new Cell { CellId = i, CellState = 0, NonogramId = id});
         }
+
+        thisNonogram.Cells = cellList;
       }
 
       for( int j = 0 ; j < maxWidth ; j++)
@@ -158,6 +175,29 @@ namespace NonogramPuzzle.Controllers
       _db.Nonograms.Remove(thisNonogram);
       _db.SaveChanges();
       return RedirectToAction("Index");
+    }
+
+    public IActionResult HandleCellClickSolve(string id, string cellNumber)
+    {
+      int cllNmbr = int.Parse(cellNumber);
+      int nonoGramId = int.Parse(id);
+
+      Nonogram thisNonogram = _db.Nonograms.FirstOrDefault(nonogram => nonogram.NonogramId == nonoGramId);
+      
+      Nonogram model = new Nonogram();
+      
+      cellList.ElementAt(cllNmbr).CellState = (cellList.ElementAt(cllNmbr).CellState +1) % 2;
+
+      model.NonogramId = thisNonogram.NonogramId;
+      model.solvingBoardHeight = thisNonogram.solvingBoardHeight;
+      model.solvingBoardWidth = thisNonogram.solvingBoardWidth;
+      model.solvingBoardDim = thisNonogram.solvingBoardDim;
+      model.NonogramWidth = thisNonogram.NonogramWidth;
+      model.NonogramHeight = thisNonogram.NonogramHeight;
+      model.NonogramDim = thisNonogram.NonogramDim;
+      model.Cells = cellList;
+
+      return View("Details", model);
     }
   }
 }
